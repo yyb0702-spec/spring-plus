@@ -5,6 +5,7 @@ import org.example.expert.client.WeatherClient;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
+import org.example.expert.domain.todo.dto.request.TodoSearchRequest;
 import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
 import org.example.expert.domain.todo.entity.Todo;
@@ -48,10 +49,17 @@ public class TodoService {
     }
 
     @Transactional(readOnly = true)
-    public Page<TodoResponse> getTodos(int page, int size) {
+    public Page<TodoResponse> getTodos(int page, int size, TodoSearchRequest request) {
+        validatePage(page,size);
+        validateDate(request);
+
         Pageable pageable = PageRequest.of(page - 1, size);
 
-        Page<Todo> todos = todoRepository.findAllByOrderByModifiedAtDesc(pageable);
+        Page<Todo> todos = todoRepository.searchTodoWithWeather(
+                request.getWeather(),
+                request.getStartDate(),
+                request.getEndDate(),
+                pageable);
 
         return todos.map(todo -> new TodoResponse(
                 todo.getId(),
@@ -80,5 +88,25 @@ public class TodoService {
                 todo.getCreatedAt(),
                 todo.getModifiedAt()
         );
+    }
+
+    private void validatePage(int page, int size) {
+        if (page < 1) {
+            throw new InvalidRequestException("페이지 번호는 1 이상이어야 합니다.");
+        }
+        if (size < 1 || size > 100) {
+            throw new InvalidRequestException("페이지 사이즈는 1 이상 100 이하여야 합니다.");
+        }
+    }
+
+    private void validateDate(TodoSearchRequest req) {
+        if (req.getStartDate() != null && req.getEndDate() != null) {
+            if (req.getStartDate().isAfter(req.getEndDate())) {
+                throw new InvalidRequestException("시작일이 종료일보다 늦을 수 없습니다.");
+            }
+        }
+        if (req.getWeather() != null && req.getWeather().isBlank()) {
+            throw new InvalidRequestException("weather 값이 올바르지 않습니다.");
+        }
     }
 }
