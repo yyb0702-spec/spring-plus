@@ -20,7 +20,7 @@ import static org.example.expert.domain.todo.entity.QTodo.todo;
 import static org.example.expert.domain.user.entity.QUser.user;
 
 @RequiredArgsConstructor
-public class TodoCustromRepositoryImpl implements TodoCustromRepository {
+public class TodoCustromRepositoryImpl implements TodoCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 

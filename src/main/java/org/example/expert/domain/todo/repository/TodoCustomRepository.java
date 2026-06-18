@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface TodoCustromRepository {
+public interface TodoCustomRepository {
     Optional<Todo> findByIdWithUser(Long todoId);
     Page<TodoSearchResponse> searchTodos(TodoSearchRequest request, Pageable pageable);
 }
