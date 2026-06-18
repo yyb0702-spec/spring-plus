@@ -42,10 +42,10 @@ public class SecurityConfig {
                         })
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll() //로그인
+                        .requestMatchers("/ws/**").permitAll() //채팅
                         .requestMatchers("/*.html").permitAll()  // 정적 HTML 파일
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN") //관리자권한
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
