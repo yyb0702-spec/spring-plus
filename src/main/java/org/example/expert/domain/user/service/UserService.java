@@ -7,6 +7,7 @@ import org.example.expert.domain.user.dto.request.UserChangePasswordRequest;
 import org.example.expert.domain.user.dto.response.UserResponse;
 import org.example.expert.domain.user.entity.User;
 import org.example.expert.domain.user.repository.UserRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,14 @@ public class UserService {
 
     public UserResponse getUser(long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new InvalidRequestException("User not found"));
+        return new UserResponse(user.getId(), user.getEmail());
+    }
+
+    //메서드 호출 결과를 캐시에 저장하고,다시 호출되면 메서드를 실행하지 않고 캐시에서 바로 반환
+    @Cacheable(value = "users", key = "#nickname")
+    public UserResponse getUserByNickname(String nickname) {
+        User user = userRepository.findByNickname(nickname)
+                .orElseThrow(() -> new InvalidRequestException("해당 닉네임의 유저가 존재하지 않습니다."));
         return new UserResponse(user.getId(), user.getEmail());
     }
 

@@ -37,6 +37,10 @@ dependencies {
     //websoket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+    //cache
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'com.github.ben-manes.caffeine:caffeine'
+
     //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 

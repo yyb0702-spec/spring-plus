@@ -20,6 +20,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser(userId));
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<UserResponse> getUserByNickname(@RequestParam String nickname) {
+        return ResponseEntity.ok(userService.getUserByNickname(nickname));
+    }
+
     @PutMapping("/users")
     public void changePassword(@Auth AuthUser authUser, @RequestBody UserChangePasswordRequest userChangePasswordRequest) {
         userService.changePassword(authUser.getId(), userChangePasswordRequest);
