@@ -1,13 +1,16 @@
 package org.example.expert.domain.todo.repository;
+
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.todo.entity.Todo;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import java.util.Optional;
+
 import static org.example.expert.domain.todo.entity.QTodo.todo;
 import static org.example.expert.domain.user.entity.QUser.user;
 
 @RequiredArgsConstructor
-public class TodoCustomRepositoryImpl implements TodoCustromRepository {
+public class TodoCustromRepositoryImpl implements TodoCustromRepository {
 
     private final JPAQueryFactory queryFactory;
 
