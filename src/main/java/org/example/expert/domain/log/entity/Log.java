@@ -16,12 +16,16 @@ public class Log {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long todoId;
 
+    @Column(nullable = false)
     private Long requestUserId;
 
+    @Column(nullable = false)
     private Long managerUserId;
 
+    @Column(nullable = false)
     private String status;
 
     private String message;
