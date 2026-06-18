@@ -6,6 +6,7 @@ import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
 import org.example.expert.domain.todo.dto.request.TodoSearchRequest;
+import org.example.expert.domain.todo.dto.request.TodoWeatherRequest;
 import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
 import org.example.expert.domain.todo.dto.response.TodoSearchResponse;
@@ -50,9 +51,9 @@ public class TodoService {
     }
 
     @Transactional(readOnly = true)
-    public Page<TodoResponse> getTodos(int page, int size, TodoSearchRequest request) {
-        validatePage(page,size);
-        validateDate(request);
+    public Page<TodoResponse> getTodos(int page, int size, TodoWeatherRequest request) {
+        validatePage(page, size);
+        validateWeatherRequest(request);
 
         Pageable pageable = PageRequest.of(page - 1, size);
 
@@ -107,7 +108,7 @@ public class TodoService {
         }
     }
 
-    private void validateDate(TodoSearchRequest req) {
+    private void validateWeatherRequest(TodoWeatherRequest req) {
         if (req.getStartDate() != null && req.getEndDate() != null) {
             if (req.getStartDate().isAfter(req.getEndDate())) {
                 throw new InvalidRequestException("시작일이 종료일보다 늦을 수 없습니다.");
